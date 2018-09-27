@@ -1,46 +1,18 @@
-/*
- * Copyright 2014 Jake Wharton
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *    http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
- package com.jakewharton.fliptables.util;
+package com.jakewharton.fliptables.util;
 
+import lombok.Value;
+import org.joda.time.DateTime;
+import org.joda.time.LocalDate;
+import org.joda.time.LocalTime;
+
+
+@Value
 public final class Person {
-  private final String firstName;
-  private final String lastName;
-  private final int age;
-  private final String nickName;
-
-  public Person(String firstName, String lastName, int age, String nickName) {
-    this.firstName = firstName;
-    this.lastName = lastName;
-    this.age = age;
-    this.nickName = nickName;
-  }
-
-  public String getFirstName() {
-    return firstName;
-  }
-
-  public String getLastName() {
-    return lastName;
-  }
-
-  public int getAge() {
-    return age;
-  }
-
-  public String getNickName() {
-    return nickName;
-  }
+    private final String firstName;
+    private final String lastName;
+    private final int age;
+    private final String nickName;
+    private final LocalDate birthday;
+    private final LocalTime workTime;
+    private final DateTime joinTime;
 }

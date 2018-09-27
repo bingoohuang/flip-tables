@@ -20,13 +20,13 @@ String[][] data = {
 System.out.println(FlipTable.of(headers, data));
 ```
 ```
-╔══════╤════════╗
-║ Test │ Header ║
-╠══════╪════════╣
-║ Foo  │ Bar    ║
-╟──────┼────────╢
-║ Kit  │ Kat    ║
-╚══════╧════════╝
+┌──────┬────────┐
+│ Test │ Header │
+┝──────╪────────╣
+│ Foo  │ Bar    │
+├──────┼────────┤
+│ Kit  │ Kat    │
+└──────┴────────┘
 ```
 
 They can be empty:
@@ -36,11 +36,11 @@ String[][] data = {};
 System.out.println(FlipTable.of(headers, data));
 ```
 ```
-╔══════╤════════╗
-║ Test │ Header ║
-╠══════╧════════╣
-║ (empty)       ║
-╚═══════════════╝
+┌──────┬────────┐
+│ Test │ Header │
+┝──────┴────────╣
+│ (empty)       │
+└───────────────┘
 ```
 
 Newlines are supported:
@@ -50,13 +50,13 @@ String[][] data = { { "Five", "Six\nSeven Eight" } };
 System.out.println(FlipTable.of(headers, data));
 ```
 ```
-╔═════════╤═════════════╗
-║ One Two │ Four        ║
-║ Three   │             ║
-╠═════════╪═════════════╣
-║ Five    │ Six         ║
-║         │ Seven Eight ║
-╚═════════╧═════════════╝
+┌─────────┬─────────────┐
+│ One Two │ Four        │
+│ Three   │             │
+┝─────────╪─────────────╣
+│ Five    │ Six         │
+│         │ Seven Eight │
+└─────────┴─────────────┘
 ```
 
 Which means tables can be nested:
@@ -69,15 +69,15 @@ String[][] data = { { inner, inner } };
 System.out.println(FlipTable.of(headers, data));
 ```
 ```
-╔═══════════════╤═══════════════╗
-║ Left          │ Right         ║
-╠═══════════════╪═══════════════╣
-║ ╔═════╤═════╗ │ ╔═════╤═════╗ ║
-║ ║ One │ Two ║ │ ║ One │ Two ║ ║
-║ ╠═════╪═════╣ │ ╠═════╪═════╣ ║
-║ ║ 1   │ 2   ║ │ ║ 1   │ 2   ║ ║
-║ ╚═════╧═════╝ │ ╚═════╧═════╝ ║
-╚═══════════════╧═══════════════╝
+┌───────────────┬───────────────┐
+│ Left          │ Right         │
+┝───────────────╪───────────────╣
+│ ┌─────┬─────┐ │ ┌─────┬─────┐ │
+│ │ One │ Two │ │ │ One │ Two │ │
+│ ┝─────╪─────╣ │ ┝─────╪─────╣ │
+│ │ 1   │ 2   │ │ │ 1   │ 2   │ │
+│ └─────┴─────┘ │ └─────┴─────┘ │
+└───────────────┴───────────────┘
 ```
 
 Helper methods convert from types like lists:
@@ -86,13 +86,13 @@ List<Person> people = Arrays.asList(new Person("Foo", "Bar"), new Person("Kit", 
 System.out.println(FlipTableConverters.fromIterable(people, Person.class));
 ```
 ```
-╔═══════════╤══════════╗
-║ FirstName │ LastName ║
-╠═══════════╪══════════╣
-║ Foo       │ Bar      ║
-╟───────────┼──────────╢
-║ Kit       │ Kat      ║
-╚═══════════╧══════════╝
+┌───────────┬──────────┐
+│ FirstName │ LastName │
+┝───────────╪──────────╣
+│ Foo       │ Bar      │
+├───────────┼──────────┤
+│ Kit       │ Kat      │
+└───────────┴──────────┘
 ```
 
 Or a database result:
@@ -101,13 +101,13 @@ ResultSet resultSet = statement.executeQuery("SELECT first_name, last_name FROM 
 System.out.println(FlipTableConverters.fromResultSet(resultSet));
 ```
 ```
-╔════════════╤═══════════╗
-║ first_name │ last_name ║
-╠════════════╪═══════════╣
-║ Jake       │ Wharton   ║
-╟────────────┼───────────╢
-║ Edward     │ Snowden   ║
-╚════════════╧═══════════╝
+┌────────────┬───────────┐
+│ first_name │ last_name │
+┝────────────╪───────────╣
+│ Jake       │ Wharton   │
+├────────────┼───────────┤
+│ Edward     │ Snowden   │
+└────────────┴───────────┘
 ```
 
 Arbitrary objects are also supported:
@@ -121,15 +121,15 @@ Object[][] data = {
 System.out.println(FlipTableConverters.fromObjects(headers, data));
 ```
 ```
-╔════════════╤═══════════╤═════╤═════════╗
-║ First Name │ Last Name │ Age │ Type    ║
-╠════════════╪═══════════╪═════╪═════════╣
-║ Big        │ Bird      │ 16  │ COSTUME ║
-╟────────────┼───────────┼─────┼─────────╢
-║ Joe        │ Smith     │ 42  │ HUMAN   ║
-╟────────────┼───────────┼─────┼─────────╢
-║ Oscar      │ Grouchant │ 8   │ PUPPET  ║
-╚════════════╧═══════════╧═════╧═════════╝
+┌────────────┬───────────┬─────┬─────────┐
+│ First Name │ Last Name │ Age │ Type    │
+┝────────────╪───────────╪─────╪─────────╣
+│ Big        │ Bird      │ 16  │ COSTUME │
+├────────────┼───────────┼─────┼─────────┤
+│ Joe        │ Smith     │ 42  │ HUMAN   │
+├────────────┼───────────┼─────┼─────────┤
+│ Oscar      │ Grouchant │ 8   │ PUPPET  │
+└────────────┴───────────┴─────┴─────────┘
 ```
 
 
