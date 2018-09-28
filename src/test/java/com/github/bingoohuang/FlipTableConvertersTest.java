@@ -189,11 +189,28 @@ public class FlipTableConvertersTest {
 
         String expected = "" +
                 "┌─────────┐\n" +
-                "│ Values  │\n" +
+                "│ Value   │\n" +
                 "╞═════════╡\n" +
                 "│ (null)  │\n" +
                 "├─────────┤\n" +
                 "│ (null)  │\n" +
+                "└─────────┘\n" ;
+        String table = FlipTable.of(list);
+        assertThat(table).isEqualTo(expected);
+    }
+
+    @Test public void allStrings() {
+        List<String> list = Lists.newArrayList();
+        list.add("abc");
+        list.add("efg");
+
+        String expected = "" +
+                "┌─────────┐\n" +
+                "│ Value   │\n" +
+                "╞═════════╡\n" +
+                "│ abc     │\n" +
+                "├─────────┤\n" +
+                "│ efg     │\n" +
                 "└─────────┘\n" ;
         String table = FlipTable.of(list);
         assertThat(table).isEqualTo(expected);

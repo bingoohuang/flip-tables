@@ -25,6 +25,15 @@ import java.util.stream.Collectors;
 public final class FlipTable {
     private static final String EMPTY = "(empty)";
     private static final String ANSI_COLORS = "\u001B\\[[;\\d]*m";
+    public static final String HEAD_START = "┌─┬─┐";
+    public static final String HEAD_END = "╞═╧═╡";
+    public static final String EMPTY_END = "└───┘";
+    public static final String DATA_START = "╞═╪═╡";
+    public static final String DATA_SPLIT = "├─┼─┤";
+    public static final String DATA_END = "└─┴─┘";
+    public static final String BORDER_CHARS = HEAD_START + HEAD_END
+            + EMPTY_END + DATA_START + DATA_SPLIT + DATA_END + "│╘═══════╛";
+
 
     /**
      * Create a new table with the specified headers and row data.
@@ -90,18 +99,18 @@ public final class FlipTable {
     // https://en.wikipedia.org/wiki/Box-drawing_character
     @Override public String toString() {
         StringBuilder builder = new StringBuilder();
-        printDivider(builder, "┌─┬─┐");
+        printDivider(builder, HEAD_START);
         printData(builder, headers);
         if (data.length == 0) {
-            printDivider(builder, "╞═╧═╡");
+            printDivider(builder, HEAD_END);
             builder.append('│').append(Util.pad(emptyWidth, EMPTY)).append("│\n");
-            printDivider(builder, "└───┘");
+            printDivider(builder, EMPTY_END);
         } else {
             for (int row = 0; row < data.length; row++) {
-                printDivider(builder, row == 0 ? "╞═╪═╡" : "├─┼─┤");
+                printDivider(builder, row == 0 ? DATA_START : DATA_SPLIT);
                 printData(builder, data[row]);
             }
-            printDivider(builder, "└─┴─┘");
+            printDivider(builder, DATA_END);
         }
         return builder.toString();
     }
@@ -182,7 +191,7 @@ public final class FlipTable {
     }
 
     private static String ofAllNulls(Iterable<?> rows) {
-        List<String> headers = Lists.newArrayList("Values");
+        List<String> headers = Lists.newArrayList("Value");
         List<String[]> data = new ArrayList<>();
         for (val ignored : rows) {
             String[] rowData = new String[]{"(null)"};

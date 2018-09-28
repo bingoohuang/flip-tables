@@ -6,7 +6,7 @@
 
     <groupId>com.github.bingoohuang</groupId>
     <artifactId>fliptables</artifactId>
-    <version>0.0.3-SNAPSHOT</version>
+    <version>0.0.4-SNAPSHOT</version>
 
     <name>Flip Tables</name>
     <description>Because pretty-printing text tables in Java should be easy.</description>
