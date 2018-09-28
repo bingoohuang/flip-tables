@@ -1,4 +1,4 @@
-package com.jakewharton.fliptables.util;
+package com.github.bingoohuang.util;
 
 import java.sql.ResultSetMetaData;
 

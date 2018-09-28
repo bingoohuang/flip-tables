@@ -4,36 +4,44 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.jakewharton.fliptables</groupId>
+    <groupId>com.github.bingoohuang</groupId>
     <artifactId>fliptables</artifactId>
-    <version>1.0.3-SNAPSHOT</version>
+    <version>0.0.2-SNAPSHOT</version>
 
     <name>Flip Tables</name>
     <description>Because pretty-printing text tables in Java should be easy.</description>
-    <url>http://github.com/JakeWharton/flip-tables/</url>
+    <url>http://github.com/bingooohuang/flip-tables/</url>
     <inceptionYear>2014</inceptionYear>
 
     <properties>
+        <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <maven.compiler.source>${java.version}</maven.compiler.source>
+        <maven.compiler.target>${java.version}</maven.compiler.target>
     </properties>
-
-    <scm>
-        <url>http://github.com/JakeWharton/flip-tables/</url>
-        <connection>scm:git:git://github.com/JakeWharton/flip-tables.git</connection>
-        <developerConnection>scm:git:ssh://git@github.com/JakeWharton/flip-tables.git</developerConnection>
-    </scm>
 
     <licenses>
         <license>
-            <name>Apache 2.0</name>
+            <name>The Apache Software License, Version 2.0</name>
             <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+            <distribution>repo</distribution>
         </license>
     </licenses>
 
-    <organization>
-        <name>Square, Inc.</name>
-        <url>http://squareup.com</url>
-    </organization>
+    <scm>
+        <connection>scm:git:git@github.com:bingoohuang/fliptables.git</connection>
+        <url>http://github.com/bingoohuang/fliptables</url>
+        <developerConnection>scm:git:git@github.com:bingoohuang/fliptables.git</developerConnection>
+    </scm>
+
+    <developers>
+        <developer>
+            <id>bingoohuang</id>
+            <name>bingoo huang</name>
+            <email>bingoo.huang@gmail.com</email>
+        </developer>
+    </developers>
 
     <dependencies>
         <dependency>
@@ -65,13 +73,88 @@
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.1</version>
+                <artifactId>maven-source-plugin</artifactId>
+                <version>2.2.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-javadoc-plugin</artifactId>
+                <version>2.9.1</version>
+                <executions>
+                    <execution>
+                        <id>attach-javadocs</id>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
                 <configuration>
-                    <source>1.8</source>
-                    <target>1.8</target>
+                    <skip>false</skip>
+                    <show>public</show>
+                    <charset>UTF-8</charset>
+                    <encoding>UTF-8</encoding>
+                    <docencoding>UTF-8</docencoding>
+                    <links>
+                        <link>http://docs.oracle.com/javase/6/docs/api</link>
+                    </links>
                 </configuration>
             </plugin>
+
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>4.3.0</version>
+            </plugin>
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>0.7.6.201602180812</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!--
+            mvn install -DskipTests -Dgpg.skip
+            mvn release:perform -Darguments=-Dgpg.passphrase=myverysupersecretpassphrase
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-gpg-plugin</artifactId>
+                <version>1.6</version>
+                <executions>
+                    <execution>
+                        <id>sign-artifacts</id>
+                        <phase>verify</phase>
+                        <goals>
+                            <goal>sign</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
         </plugins>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.sonarsource.scanner.maven</groupId>
+                    <artifactId>sonar-maven–plugin</artifactId>
+                    <version>3.2</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
     </build>
 </project>

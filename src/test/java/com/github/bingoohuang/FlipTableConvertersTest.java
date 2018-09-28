@@ -1,17 +1,19 @@
-package com.jakewharton.fliptables;
+package com.github.bingoohuang;
 
-import com.jakewharton.fliptables.util.FakeResultSet;
-import com.jakewharton.fliptables.util.Person;
-import com.jakewharton.fliptables.util.PersonType;
+import com.google.common.collect.Lists;
+import com.google.common.collect.Maps;
+import com.github.bingoohuang.util.FakeResultSet;
+import com.github.bingoohuang.util.Person;
+import com.github.bingoohuang.util.PersonType;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
 import org.junit.Test;
 
 import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 
 import static com.google.common.truth.Truth.assertThat;
 
@@ -45,23 +47,50 @@ public class FlipTableConvertersTest {
                 "│ 8   │ (null)     │ Oscar     │ 2018-09-27 17:54:20 │ Grouchant │ Oscar The Grouch │ 17:54:08 │\n" +
                 "└─────┴────────────┴───────────┴─────────────────────┴───────────┴──────────────────┴──────────┘\n";
 
-        String table = FlipTableConverters.fromIterable(people, Person.class);
+        String table = FlipTable.of(people);
         assertThat(table).isEqualTo(expected);
     }
 
     @Test public void emptyIterator() {
         List<Person> people = Collections.emptyList();
         String expected = "" +
-                "┌─────┬──────────┬───────────┬──────────┬──────────┬──────────┬──────────┐\n" +
-                "│ Age │ Birthday │ FirstName │ JoinTime │ LastName │ NickName │ WorkTime │\n" +
-                "╞═════╧══════════╧═══════════╧══════════╧══════════╧══════════╧══════════╡\n" +
-                "│ (empty)                                                                │\n" +
-                "└────────────────────────────────────────────────────────────────────────┘\n";
-        String table = FlipTableConverters.fromIterable(people, Person.class);
+                "┌───────┐\n" +
+                "│ Empty │\n" +
+                "╘═══════╛\n";
+        String table = FlipTable.of(people);
         assertThat(table).isEqualTo(expected);
     }
 
-    @Test public void simpleResultSet() throws SQLException {
+    @Test public void simpleMap() {
+        List<Map<String, String>> list = Lists.newArrayList();
+        list.add(mapOf("English", "One", "Digit", "1", "Spanish", "Uno"));
+        list.add(mapOf("English", "Two", "Digit", "2", "Spanish", "Dos"));
+        list.add(mapOf("English", "Three", "Digit", "3", "Spanish", "Tres"));
+
+        String expected = "" +
+                "┌───────┬─────────┬─────────┐\n" +
+                "│ Digit │ English │ Spanish │\n" +
+                "╞═══════╪═════════╪═════════╡\n" +
+                "│ 1     │ One     │ Uno     │\n" +
+                "├───────┼─────────┼─────────┤\n" +
+                "│ 2     │ Two     │ Dos     │\n" +
+                "├───────┼─────────┼─────────┤\n" +
+                "│ 3     │ Three   │ Tres    │\n" +
+                "└───────┴─────────┴─────────┘\n";
+        String table = FlipTable.of(list);
+        assertThat(table).isEqualTo(expected);
+    }
+
+    private Map<String, String> mapOf(String... kvs) {
+        Map<String, String> map = Maps.newHashMap();
+        for (int i = 0; i + 1 < kvs.length; i += 2) {
+            map.put(kvs[i], kvs[i + 1]);
+        }
+
+        return map;
+    }
+
+    @Test public void simpleResultSet() {
         String[] headers = {"English", "Digit", "Spanish"};
         String[][] data = {
                 {"One", "1", "Uno"},
@@ -79,11 +108,11 @@ public class FlipTableConvertersTest {
                 + "├─────────┼───────┼─────────┤\n"
                 + "│ Three   │ 3     │ Tres    │\n"
                 + "└─────────┴───────┴─────────┘\n";
-        String table = FlipTableConverters.fromResultSet(resultSet);
+        String table = FlipTable.of(resultSet);
         assertThat(table).isEqualTo(expected);
     }
 
-    @Test public void emptyResultSet() throws SQLException {
+    @Test public void emptyResultSet() {
         String[] headers = {"English", "Digit", "Spanish"};
         String[][] data = {};
         ResultSet resultSet = new FakeResultSet(headers, data);
@@ -93,7 +122,7 @@ public class FlipTableConvertersTest {
                 + "╞═════════╧═══════╧═════════╡\n"
                 + "│ (empty)                   │\n"
                 + "└───────────────────────────┘\n";
-        String table = FlipTableConverters.fromResultSet(resultSet);
+        String table = FlipTable.of(resultSet);
         assertThat(table).isEqualTo(expected);
     }
 
@@ -114,7 +143,7 @@ public class FlipTableConvertersTest {
                 + "├────────────┼───────────┼─────┼─────────┤\n"
                 + "│ Oscar      │ Grouchant │ 8   │ PUPPET  │\n"
                 + "└────────────┴───────────┴─────┴─────────┘\n";
-        String table = FlipTableConverters.fromObjects(headers, data);
+        String table = FlipTable.of(headers, data);
         assertThat(table).isEqualTo(expected);
     }
 
@@ -127,7 +156,7 @@ public class FlipTableConvertersTest {
                 + "╞════════════╧═══════════╧═════╧══════╡\n"
                 + "│ (empty)                             │\n"
                 + "└─────────────────────────────────────┘\n";
-        String table = FlipTableConverters.fromObjects(headers, data);
+        String table = FlipTable.of(headers, data);
         assertThat(table).isEqualTo(expected);
     }
 }
