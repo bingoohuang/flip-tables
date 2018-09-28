@@ -146,6 +146,8 @@ Object[][] data = {
 };
 System.out.println(FlipTable.of(headers, data));
 ```
+
+Use font `Ubuntu Mono` to get the better alignment for Chinese characters.
 ```
 ┌────────────┬───────────┬─────┬─────────┐
 │ First Name │ Last Name │ Age │ Type    │
