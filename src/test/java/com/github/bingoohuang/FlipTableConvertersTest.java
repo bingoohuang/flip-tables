@@ -180,4 +180,22 @@ public class FlipTableConvertersTest {
         String table = FlipTable.of(list);
         assertThat(table).isEqualTo(expected);
     }
+
+
+    @Test public void allNulls() {
+        List<Integer> list = Lists.newArrayList();
+        list.add(null);
+        list.add(null);
+
+        String expected = "" +
+                "┌─────────┐\n" +
+                "│ Values  │\n" +
+                "╞═════════╡\n" +
+                "│ (null)  │\n" +
+                "├─────────┤\n" +
+                "│ (null)  │\n" +
+                "└─────────┘\n" ;
+        String table = FlipTable.of(list);
+        assertThat(table).isEqualTo(expected);
+    }
 }

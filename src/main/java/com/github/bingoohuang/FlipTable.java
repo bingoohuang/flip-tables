@@ -169,11 +169,38 @@ public final class FlipTable {
                 "│ Empty │\n" +
                 "╘═══════╛\n";
 
-        val rowType = Iterables.getFirst(rows, null).getClass();
+        Class<?> rowType = findRowType(rows);
+
+        if (rowType == null) {
+            return ofAllNulls(rows);
+        }
+
         if (Map.class.isAssignableFrom(rowType)) {
             return fromIterableMaps(rows);
         }
         return fromIterableBeans(rows, rowType);
+    }
+
+    private static String ofAllNulls(Iterable<?> rows) {
+        List<String> headers = Lists.newArrayList("Values");
+        List<String[]> data = new ArrayList<>();
+        for (val ignored : rows) {
+            String[] rowData = new String[]{"(null)"};
+            data.add(rowData);
+        }
+
+        return of(headers, data);
+    }
+
+    private static Class<?> findRowType(Iterable<?> rows) {
+        Class<?> rowType = null;
+        for (val row : rows) {
+            if (row != null) {
+                rowType = row.getClass();
+                break;
+            }
+        }
+        return rowType;
     }
 
     @SuppressWarnings("unchecked")
