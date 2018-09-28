@@ -159,4 +159,25 @@ public class FlipTableConvertersTest {
         String table = FlipTable.of(headers, data);
         assertThat(table).isEqualTo(expected);
     }
+
+
+    @Test public void singleValueList() {
+        List<Integer> list = Lists.newArrayList();
+        list.add(100);
+        list.add(200);
+        list.add(300);
+
+        String expected = "" +
+                "┌─────────┐\n" +
+                "│ Value   │\n" +
+                "╞═════════╡\n" +
+                "│ 100     │\n" +
+                "├─────────┤\n" +
+                "│ 200     │\n" +
+                "├─────────┤\n" +
+                "│ 300     │\n" +
+                "└─────────┘\n";
+        String table = FlipTable.of(list);
+        assertThat(table).isEqualTo(expected);
+    }
 }
